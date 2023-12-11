@@ -39,7 +39,7 @@ User* GetUser(const string& _username, vector<User>& _UserDB)
     }
 
 }
-
+// not checking password
 bool LoginUser(const string& _username, const string& _password, vector<User> &_UserDB)
 {
     if (GetUser(_username, _UserDB))
