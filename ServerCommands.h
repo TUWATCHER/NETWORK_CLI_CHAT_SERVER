@@ -39,16 +39,26 @@ User* GetUser(const string& _username, vector<User>& _UserDB)
     }
 
 }
-// not checking password
+
 bool LoginUser(const string& _username, const string& _password, vector<User> &_UserDB)
 {
-    if (GetUser(_username, _UserDB))
+    if (FindUser(_username, _UserDB))
     {
-        std::cout << "Login has been successfull!\n";
-        GetUser(_username, _UserDB)->SetToken(reinterpret_cast<uint64_t>(GetUser(_username, _UserDB)));
-        GetUser(_username, _UserDB)->SetStatus(true);
-        std::cout << "User security token: " << GetUser(_username, _UserDB)->GetToken() << std::endl;     
-        return true;
+        auto search_index = std::find(_UserDB.begin(), _UserDB.end(), User(_username));
+        if(search_index->CheckUser(_username, _password))
+        {
+            std::cout << "Login has been successfull!\n";
+            GetUser(_username, _UserDB)->SetToken(reinterpret_cast<uint64_t>(GetUser(_username, _UserDB)));
+            GetUser(_username, _UserDB)->SetStatus(true);
+            std::cout << "User security token: " << GetUser(_username, _UserDB)->GetToken() << std::endl;     
+            return true;
+        }
+        else
+        {
+            std::cout << "Wrong password!\n";
+            return false;
+        }
+        
     }
     else
     {
