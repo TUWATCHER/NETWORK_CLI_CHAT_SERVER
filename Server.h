@@ -11,7 +11,7 @@
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros  
 #include <algorithm>
 #include "ServerCommands.h"
-
+#include "UserDB.hpp"
 
 
 #define PORT 7777
@@ -206,7 +206,7 @@ void Run()
                         case 101:
                         {
                             UserParser(clientRequest, username, password);
-
+                            //UserDB::getInstance().checkUser(username, password);
                             std::cout << "User wants to register!\n";
                             if (RegisterUser(username, password, UserDataBase))
                             {

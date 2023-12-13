@@ -1,0 +1,41 @@
+#include "UserDB.hpp"
+
+
+UserDB &UserDB::getInstance()
+{
+    static UserDB theInstance {};
+    return theInstance;
+}
+
+bool UserDB::checkUser(const std::string &username, const std::string &password)
+{
+    std::string query = {
+                        "select * from chatdb.usertb where usernm = \'"
+                        + username + 
+                        "\' and passwd = \'" 
+                        + password + 
+                        "\'"};
+    try
+    {
+        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::work trans{conn};
+        pqxx::result res = trans.exec(query);
+        trans.commit();
+
+        if (res.size())
+        {
+            std::cout << "User exists!\n";    
+            return true;
+        }
+        else
+        {
+            std::cout << "User does not exist!\n";
+            return false;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    return false; 
+}
