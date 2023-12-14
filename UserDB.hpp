@@ -7,7 +7,8 @@ class UserDB final
 {
     public:
     static UserDB& getInstance();
-    bool checkUser(const std::string& username, const std::string& password);
+    bool loginUser(const std::string& username, const std::string& password);
+    bool registerUser(const std::string& username, const std::string& password);
     private:
         UserDB() = default;
         UserDB(const UserDB&) = delete;

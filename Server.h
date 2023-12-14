@@ -205,21 +205,22 @@ void Run()
                     {
                         case 101:
                         {
-                            UserParser(clientRequest, username, password);
-                            //UserDB::getInstance().checkUser(username, password);
+                            UserParser(clientRequest, username, password);                            
+                            
                             std::cout << "User wants to register!\n";
-                            if (RegisterUser(username, password, UserDataBase))
+                            if (UserDB::getInstance().registerUser(username, password))
                             {
                                 std::cout << "User has been created!\n";
                                 bzero(serverResponse, sizeof(serverResponse));                           
                                 bytes = send(client_sd, strncpy(serverResponse, "1011", sizeof(serverResponse)), sizeof(serverResponse), 0);                               
-                                                            
+                                break;                          
                             }
                             else
                             {
                                 std::cout << "Failed to register user!\n";
                                 bzero(serverResponse, sizeof(serverResponse));
-                                bytes = send(client_sd, strncpy(serverResponse, "1010", sizeof(serverResponse)), sizeof(serverResponse), 0);  
+                                bytes = send(client_sd, strncpy(serverResponse, "1010", sizeof(serverResponse)), sizeof(serverResponse), 0);
+                                break;
                             }
                         }
                         case 111:
@@ -227,17 +228,19 @@ void Run()
                             UserParser(clientRequest, username, password);
                             std::cout << "User wants to login!\n";
 
-                            if (LoginUser(username, password, UserDataBase))
+                            if (UserDB::getInstance().loginUser(username, password))
                             {
                                 std::cout << "Success Login!\n";
                                 bzero(serverResponse, sizeof(serverResponse));
-                                bytes = send(client_sd, strncpy(serverResponse, "1111", sizeof(serverResponse)), sizeof(serverResponse), 0);                            
+                                bytes = send(client_sd, strncpy(serverResponse, "1111", sizeof(serverResponse)), sizeof(serverResponse), 0);    
+                                break;                        
                             }
                             else
                             {
                                 std::cout << "Login Failed!\n";
                                 bzero(serverResponse, sizeof(serverResponse));
-                                bytes = send(client_sd, strncpy(serverResponse, "1110", sizeof(serverResponse)), sizeof(serverResponse), 0); 
+                                bytes = send(client_sd, strncpy(serverResponse, "1110", sizeof(serverResponse)), sizeof(serverResponse), 0);
+                                break;
                             }
                         }
                         default:
@@ -252,6 +255,7 @@ void Run()
                                 }
                                 
                             } 
+                            break;
                         }
                     }                  
                                                                      

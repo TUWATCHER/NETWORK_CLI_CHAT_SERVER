@@ -7,7 +7,7 @@ UserDB &UserDB::getInstance()
     return theInstance;
 }
 
-bool UserDB::checkUser(const std::string &username, const std::string &password)
+bool UserDB::loginUser(const std::string &username, const std::string &password)
 {
     std::string query = {
                         "select * from chatdb.usertb where usernm = \'"
@@ -36,6 +36,33 @@ bool UserDB::checkUser(const std::string &username, const std::string &password)
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
+        return false;
     }
     return false; 
+}
+
+bool UserDB::registerUser(const std::string &username, const std::string &password)
+{
+    std::string query = {
+                        "insert into chatdb.usertb (usernm, passwd) values (\'"
+                        + username +  "\', " 
+                        + "\'" + password + "\' ); "
+                        };
+    std::cout << query << std::endl;
+
+     try
+    {
+        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::work trans{conn};
+        pqxx::result res = trans.exec(query);
+        trans.commit();
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    }                   
+                        
+    return false;
 }
