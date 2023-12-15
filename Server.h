@@ -243,6 +243,26 @@ void Run()
                                 break;
                             }
                         }
+                        case 000:
+                        {
+                            UserParser(clientRequest, username, password);
+                            std::cout << "User wants to be deleted!\n";
+
+                            if (UserDB::getInstance().deleteUser(username))
+                            {
+                                std::cout << "Deletion successful!\n";
+                                bzero(serverResponse, sizeof(serverResponse));
+                                bytes = send(client_sd, strncpy(serverResponse, "0001", sizeof(serverResponse)), sizeof(serverResponse), 0);    
+                                break;                        
+                            }
+                            else
+                            {
+                                std::cout << "Deletion Failed!\n";
+                                bzero(serverResponse, sizeof(serverResponse));
+                                bytes = send(client_sd, strncpy(serverResponse, "0000", sizeof(serverResponse)), sizeof(serverResponse), 0);
+                                break;
+                            }
+                        }
                         default:
                         {
                             for ( int j = 0; j < max_clients; ++j)
