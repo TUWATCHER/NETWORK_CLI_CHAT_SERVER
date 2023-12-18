@@ -187,7 +187,7 @@ void Run()
                 {
                     getpeername(client_sd , (struct sockaddr*)&address, (socklen_t*)&addrlen);
                     std::cout << "Receiving packets from client " << inet_ntoa(address.sin_addr) << std::endl;             
-                    std::cout << clientRequest; 
+                    std::cout << clientRequest << std::endl; 
 
 
                     ssize_t bytes = 0;
@@ -242,6 +242,27 @@ void Run()
                                 bytes = send(client_sd, strncpy(serverResponse, "1110", sizeof(serverResponse)), sizeof(serverResponse), 0);
                                 break;
                             }
+                        }
+                        case 200:
+                        {
+                            std::cout << "User sending message!\n";
+                            string message, fromUser, toUser;
+                            MessageParser(clientRequest, fromUser, toUser, message);
+                            if (UserDB::getInstance().createMessage(fromUser, toUser, message))
+                            {
+                                std::cout << "Message successfully received!\n";
+                                bzero(serverResponse, sizeof(serverResponse));
+                                bytes = send(client_sd, strncpy(serverResponse, "2001", sizeof(serverResponse)), sizeof(serverResponse), 0);
+                                break;
+                            }
+                            else
+                            {
+                                std::cout << "Message was not received!\n";
+                                bzero(serverResponse, sizeof(serverResponse));
+                                bytes = send(client_sd, strncpy(serverResponse, "2000", sizeof(serverResponse)), sizeof(serverResponse), 0);
+                                break;
+                            }                            
+                            
                         }
                         case 000:
                         {

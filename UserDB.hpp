@@ -10,6 +10,7 @@ class UserDB final
     bool loginUser(const std::string& username, const std::string& password);
     bool registerUser(const std::string& username, const std::string& password);
     bool deleteUser(const std::string& username);
+    bool createMessage(const std::string& fromUser, const std::string& toUser, const std::string& message);
     private:
         UserDB() = default;
         UserDB(const UserDB&) = delete;

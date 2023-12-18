@@ -91,3 +91,28 @@ bool UserDB::deleteUser(const std::string &username)
                         
     return false;
 }
+
+bool UserDB::createMessage(const std::string &fromUser, const std::string &toUser, const std::string &message)
+{
+    std::string query = {
+                        "insert into chatdb.messagetb (fromuser, touser, message) values (\'"
+                        + fromUser +  "\', " 
+                        + "\'" + toUser + "\', "
+                        +  "\'" + message + "\'); "
+                        };
+
+    try
+    {
+        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::work trans{conn};
+        pqxx::result res = trans.exec(query);
+        trans.commit();
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    } 
+    return false;
+}

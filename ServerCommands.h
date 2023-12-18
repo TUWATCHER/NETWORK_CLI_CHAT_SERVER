@@ -8,6 +8,7 @@ using std::string, std::vector;
 
 bool RegisterUser(const string& _username, const string& _password, std::vector<User>& _UserDB);
 void UserParser(const char request[], string& _username, string& _password);
+void MessageParser(const char request[], string& fromUser, string& toUser, string& message);
 const bool FindUser(const string& _username, const vector<User>& _UserDB);
 User* GetUser(const string& _username, vector<User>& _UserDB);
 bool LoginUser(const string& _username, const string& _password, vector<User>& _UserDB); 
@@ -90,4 +91,22 @@ void UserParser(const char request[], string& _username, string& _password)
     
     UID.erase(0, UID.find("#PWDB#") + 6);        
     _password = UID.substr(0, UID.find("#PWDE#"));
+}
+
+void MessageParser(const char request[], string &fromUser, string& toUser, string& message)
+{
+    std::string MSG = request;
+    MSG.erase(0, 9);
+    std::cout << MSG << std::endl;
+
+    fromUser = MSG.substr(0, MSG.find("#TO#"));
+    std::cout << "FROM: " << fromUser << std::endl;
+
+    MSG.erase(0, MSG.find("#TO#") + 4);
+    toUser = MSG.substr(0, MSG.find("#MSG#"));
+    std::cout << "TO: " << toUser << std::endl;
+
+    MSG.erase(0, MSG.find("#MSG#") + 5);
+    message = MSG.substr(0, MSG.size());
+    std::cout << "Message: " << message << std::endl;
 }
