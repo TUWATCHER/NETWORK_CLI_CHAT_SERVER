@@ -261,8 +261,21 @@ void Run()
                                 bzero(serverResponse, sizeof(serverResponse));
                                 bytes = send(client_sd, strncpy(serverResponse, "2000", sizeof(serverResponse)), sizeof(serverResponse), 0);
                                 break;
-                            }                            
-                            
+                            }                             
+                        }
+                        case 210:
+                        {
+                            std::cout << "User wants to check messages!\n";
+                            UserParser(clientRequest, username, password);
+                            //Send as one string!
+                            for (auto msg : UserDB::getInstance().checkMessage(username))
+                            {
+                                bzero(serverResponse, sizeof(serverResponse));
+                                strncpy(serverResponse, msg.c_str(), sizeof(serverResponse));
+                                ssize_t bytes = send(client_sd, serverResponse, sizeof(serverResponse), 0);                                
+                            }
+                                                      
+                            break;
                         }
                         case 000:
                         {

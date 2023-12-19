@@ -116,3 +116,31 @@ bool UserDB::createMessage(const std::string &fromUser, const std::string &toUse
     } 
     return false;
 }
+
+std::vector<std::string> UserDB::checkMessage(const std::string &username)
+{
+    std::vector<std::string> chat;
+    std::string query = {
+                        "select * from chatdb.messagetb where touser = \'"
+                         + username + "\'"
+                        };
+    try
+    {
+        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::work trans{conn};
+        pqxx::result res = trans.exec(query);
+        for (auto row : res)
+        {
+            chat.push_back("[From:]" + row["fromuser"].as<std::string>() + '\n' + row["message"].as<std::string>() + '\n');
+        }
+
+        return chat;
+
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return chat;
+    } 
+    
+}
