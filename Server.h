@@ -267,14 +267,13 @@ void Run()
                         {
                             std::cout << "User wants to check messages!\n";
                             UserParser(clientRequest, username, password);
-                            //Send as one string!
+                            std::string chatHistory;
                             for (auto msg : UserDB::getInstance().checkMessage(username))
                             {
-                                bzero(serverResponse, sizeof(serverResponse));
-                                strncpy(serverResponse, msg.c_str(), sizeof(serverResponse));
-                                ssize_t bytes = send(client_sd, serverResponse, sizeof(serverResponse), 0);                                
+                                chatHistory += msg;                           
                             }
-                                                      
+                            bzero(serverResponse, sizeof(serverResponse));
+                            bytes = send(client_sd, strncpy(serverResponse, chatHistory.c_str(), sizeof(serverResponse)), sizeof(serverResponse), 0);                          
                             break;
                         }
                         case 000:
