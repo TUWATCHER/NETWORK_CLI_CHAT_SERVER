@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(CTest)
 enable_testing()
 
-add_executable(Server main.cpp User.cpp UserDB.cpp)
+add_executable(Server main.cpp ServerCommands.cpp)
 target_link_libraries(Server PRIVATE pqxx pq)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

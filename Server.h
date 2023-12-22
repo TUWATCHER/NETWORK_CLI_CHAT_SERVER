@@ -10,8 +10,7 @@
 #include <sys/types.h>  
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros  
 #include <algorithm>
-#include "ServerCommands.h"
-#include "UserDB.hpp"
+#include "ServerCommands.hpp"
 
 
 #define PORT 7777
@@ -19,6 +18,7 @@
 #define LISTEN_BUFFER 5
 #define ERROR -1
 
+using std::string;
 
 void Run();
 
@@ -28,7 +28,7 @@ socklen_t addrlen;
 int master_socket_fd, connection, bind_status, connection_status,
 client_socket[5], max_clients = 5, client_sd, activity, max_sd, new_socket, requestCode;
 
-std::vector<User> UserDataBase;
+
 
 const char* message = "Welcome to CLICHAT Server!";
 char clientRequest[MESSAGE_LENGTH];
@@ -204,10 +204,11 @@ void Run()
                     switch(commandCode)
                     {
                         case 101:
-                        {
-                            UserParser(clientRequest, username, password);                            
+                        {                                                                              
                             
                             std::cout << "User wants to register!\n";
+
+                            UserDB::getInstance().UserParser(clientRequest, username, password);  
                             if (UserDB::getInstance().registerUser(username, password))
                             {
                                 std::cout << "User has been created!\n";
@@ -225,9 +226,10 @@ void Run()
                         }
                         case 111:
                         {
-                            UserParser(clientRequest, username, password);
+                           
                             std::cout << "User wants to login!\n";
 
+                            UserDB::getInstance().UserParser(clientRequest, username, password); 
                             if (UserDB::getInstance().loginUser(username, password))
                             {
                                 std::cout << "Success Login!\n";
@@ -246,8 +248,9 @@ void Run()
                         case 200:
                         {
                             std::cout << "User sending message!\n";
-                            string message, fromUser, toUser;
-                            MessageParser(clientRequest, fromUser, toUser, message);
+
+                            string message, fromUser, toUser;                            
+                            UserDB::getInstance().MessageParser(clientRequest, fromUser, toUser, message); 
                             if (UserDB::getInstance().createMessage(fromUser, toUser, message))
                             {
                                 std::cout << "Message successfully received!\n";
@@ -266,7 +269,8 @@ void Run()
                         case 210:
                         {
                             std::cout << "User wants to check messages!\n";
-                            UserParser(clientRequest, username, password);
+
+                            UserDB::getInstance().UserParser(clientRequest, username, password);
                             std::string chatHistory;
                             for (auto msg : UserDB::getInstance().checkMessage(username))
                             {
@@ -278,9 +282,10 @@ void Run()
                         }
                         case 000:
                         {
-                            UserParser(clientRequest, username, password);
+                            
                             std::cout << "User wants to be deleted!\n";
 
+                            UserDB::getInstance().UserParser(clientRequest, username, password);
                             if (UserDB::getInstance().deleteUser(username))
                             {
                                 std::cout << "Deletion successful!\n";
