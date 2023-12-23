@@ -122,6 +122,7 @@ std::vector<std::string> UserDB::checkMessage(const std::string &username)
     std::vector<std::string> chat;
     std::string query = {
                         "select * from chatdb.messagetb where touser = \'"
+                         + username + "\' or fromuser = \'"
                          + username + "\'"
                         };
     try
@@ -131,7 +132,8 @@ std::vector<std::string> UserDB::checkMessage(const std::string &username)
         pqxx::result res = trans.exec(query);
         for (auto row : res)
         {
-            chat.push_back("[From:]" + row["fromuser"].as<std::string>() + '\n' + row["message"].as<std::string>() + '\n');
+            chat.push_back("[From:]" + row["fromuser"].as<std::string>() + " [To:]" + row["touser"].as<std::string>() + '\n'
+                             + row["message"].as<std::string>() + '\n');
         }
 
         return chat;
