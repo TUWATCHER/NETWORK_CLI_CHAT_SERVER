@@ -280,6 +280,14 @@ void Run()
                             bytes = send(client_sd, strncpy(serverResponse, chatHistory.c_str(), sizeof(serverResponse)), sizeof(serverResponse), 0);                          
                             break;
                         }
+                        case 500:
+                        {
+                            std::cout << "User wants to check registered users!\n";                            
+
+                            bzero(serverResponse, sizeof(serverResponse));
+                            bytes = send(client_sd, strncpy(serverResponse, UserDB::getInstance().ShowUsers().c_str(), sizeof(serverResponse)), sizeof(serverResponse), 0);  
+                            break;
+                        }
                         case 000:
                         {
                             

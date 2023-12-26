@@ -15,7 +15,7 @@ class UserDB final
     std::vector<std::string> checkMessage(const std::string& username);
     void UserParser(const char request[], std::string& _username, std::string& _password);
     void MessageParser(const char request[], std::string &fromUser, std::string& toUser, std::string& message);
-
+    std::string ShowUsers();
     private:
         UserDB() = default;
         UserDB(const UserDB&) = delete;

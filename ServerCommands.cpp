@@ -147,6 +147,33 @@ std::vector<std::string> UserDB::checkMessage(const std::string &username)
     
 }
 
+std::string UserDB::ShowUsers()
+{
+    std::string Users;
+    std::string query = {
+                        "select * from chatdb.usertb"
+                        };
+    
+    try
+    {
+        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::work trans{conn};
+        pqxx::result res = trans.exec(query);
+        for (auto row : res)
+        {
+            Users += (row["usernm"].as<std::string>() + "\n");
+        }
+        
+        return Users;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return Users;
+    } 
+    
+}
+
 void UserDB::UserParser(const char request[], std::string &_username, std::string &_password)
 {
     std::string UID = request;
@@ -174,3 +201,5 @@ void UserDB::MessageParser(const char request[], std::string &fromUser, std::str
     message = MSG.substr(0, MSG.size());
     std::cout << "Message: " << message << std::endl;
 }
+
+
