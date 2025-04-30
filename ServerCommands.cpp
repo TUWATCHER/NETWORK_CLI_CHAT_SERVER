@@ -17,7 +17,7 @@ bool UserDB::loginUser(const std::string &username, const std::string &password)
                         "\'"};
     try
     {
-        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::connection conn("user=postgres password=***** host=127.0.0.1 port=5432 dbname=template1");
         pqxx::work trans{conn};
         pqxx::result res = trans.exec(query);
         trans.commit();
@@ -52,7 +52,7 @@ bool UserDB::registerUser(const std::string &username, const std::string &passwo
 
     try
     {
-        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::connection conn("user=postgres password=***** host=127.0.0.1 port=5432 dbname=template1");
         pqxx::work trans{conn};
         pqxx::result res = trans.exec(query);
         trans.commit();
@@ -77,7 +77,7 @@ bool UserDB::deleteUser(const std::string &username)
 
      try
     {
-        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::connection conn("user=postgres password=***** host=127.0.0.1 port=5432 dbname=template1");
         pqxx::work trans{conn};
         pqxx::result res = trans.exec(query);
         trans.commit();
@@ -103,7 +103,7 @@ bool UserDB::createMessage(const std::string &fromUser, const std::string &toUse
 
     try
     {
-        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::connection conn("user=postgres password=***** host=127.0.0.1 port=5432 dbname=template1");
         pqxx::work trans{conn};
         pqxx::result res = trans.exec(query);
         trans.commit();
@@ -127,7 +127,7 @@ std::vector<std::string> UserDB::checkMessage(const std::string &username)
                         };
     try
     {
-        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::connection conn("user=postgres password=***** host=127.0.0.1 port=5432 dbname=template1");
         pqxx::work trans{conn};
         pqxx::result res = trans.exec(query);
         for (auto row : res)
@@ -156,7 +156,7 @@ std::string UserDB::ShowUsers()
     
     try
     {
-        pqxx::connection conn("user=postgres password=<Rv567%00> host=127.0.0.1 port=5432 dbname=template1");
+        pqxx::connection conn("user=postgres password=***** host=127.0.0.1 port=5432 dbname=template1");
         pqxx::work trans{conn};
         pqxx::result res = trans.exec(query);
         for (auto row : res)
